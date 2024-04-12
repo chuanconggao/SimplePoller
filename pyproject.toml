@@ -1,0 +1,47 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.coverage.run]
+source = [
+    "src",
+]
+
+[tool.mypy]
+ignore_missing_imports = true
+strict = true
+
+[tool.poetry]
+name = "simple-poller"
+version = "0.1.0"
+description = ""
+authors = ["Chuancong Gao <chuanconggao@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.3"
+pytest-cov = "^4.1.0"
+pytest-asyncio = "^0.23.0"
+ipykernel = "^6.26.0"
+mypy = "^1.7.1"
+flake8 = "^6.1.0"
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint."messages control"]
+disable = [
+    "C0103",
+    "C0114",
+    "C0115",
+    "C0116",
+]
+
+[tool.pytest.ini_options]
+addopts = "--cov --cov-report xml:cov.xml --cov-report html --cov-report term-missing"
+pythonpath = [
+    "src",
+]

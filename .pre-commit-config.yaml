@@ -1,0 +1,29 @@
+repos:
+- repo: https://github.com/pre-commit/pre-commit-hooks
+  rev: v4.5.0
+  hooks:
+  - id: check-case-conflict
+  - id: check-json
+  - id: check-merge-conflict
+  - id: check-symlinks
+  - id: check-toml
+  - id: check-yaml
+  - id: debug-statements
+  - id: end-of-file-fixer
+  - id: trailing-whitespace
+- repo: https://github.com/PyCQA/flake8
+  rev: 6.1.0
+  hooks:
+  - id: flake8
+- repo: https://github.com/python-poetry/poetry
+  rev: "1.7"
+  hooks:
+  - id: poetry-check
+- repo: local
+  hooks:
+  - id: check-local
+    name: local checks on all files
+    language: script
+    entry: ./pre-commit-local-checks
+    pass_filenames: false
+    always_run: true
