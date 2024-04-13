@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from asyncio import sleep
 from logging import info
 import signal
 from types import FrameType
@@ -18,6 +19,7 @@ class BasePoller(ABC):
 
     async def poll_until(
         self,
+        interval: float = 0.1,
         cond: Optional[Callable[[], Awaitable[bool]]] = None,
     ) -> None:
         exiting: bool = False
@@ -33,6 +35,8 @@ class BasePoller(ABC):
             and not exiting
         ):
             info("Polling")
+
+            await sleep(interval)
 
             await self.poll()
 

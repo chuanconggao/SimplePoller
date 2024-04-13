@@ -33,4 +33,4 @@ async def test_BasePoller_poll_until():
     async def cond() -> bool:
         return len(c) < 3
 
-    await poller.poll_until(cond)
+    await poller.poll_until(cond=cond)
