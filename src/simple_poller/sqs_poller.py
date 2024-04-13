@@ -1,5 +1,5 @@
 from asyncio import as_completed
-from logging import info
+from logging import error, info
 from os import getenv
 from typing import Any, Awaitable, Callable, override
 
@@ -46,12 +46,15 @@ class SqsPoller(BasePoller):
             message_id: str = message["MessageId"]
             info(f"Processing message with ID {message_id}")
 
-            await self.handler(message)
+            try:
+                await self.handler(message)
 
-            to_be_deleted.append({
-                "Id": message_id,
-                "ReceiptHandle": message["ReceiptHandle"],
-            })
+                to_be_deleted.append({
+                    "Id": message_id,
+                    "ReceiptHandle": message["ReceiptHandle"],
+                })
+            except RuntimeError:
+                error("Failed to process message with ID {message_id}")
 
         try:
             for task in as_completed(process(message) for message in messages):
