@@ -23,7 +23,7 @@ class SqsPoller(BasePoller):
         self.__client = boto3.client(
             service_name="sqs",
             endpoint_url=(
-                "http://localhost.localstack.cloud:4566" if STAGE == "local"
+                "http://localhost:4566" if STAGE == "local"
                 else None
             ),
         )
