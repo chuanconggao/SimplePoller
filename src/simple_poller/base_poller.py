@@ -1,9 +1,12 @@
+from __future__ import annotations
+
+import signal
 from abc import ABC, abstractmethod
 from asyncio import sleep
+from collections.abc import Awaitable
 from logging import info
-import signal
 from types import FrameType
-from typing import Awaitable, Callable, Optional
+from typing import Callable
 
 
 class BasePoller(ABC):
@@ -20,7 +23,7 @@ class BasePoller(ABC):
     async def poll_until(
         self,
         interval: float = 0.1,
-        cond: Optional[Callable[[], Awaitable[bool]]] = None,
+        cond: Callable[[], Awaitable[bool]] | None = None,
     ) -> None:
         exiting: bool = False
 

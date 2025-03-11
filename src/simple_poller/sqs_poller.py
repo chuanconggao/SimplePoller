@@ -1,7 +1,8 @@
 from asyncio import as_completed
+from collections.abc import Awaitable
 from logging import error, info
 from os import getenv
-from typing import Any, Awaitable, Callable, override
+from typing import Any, Callable, override
 
 import boto3
 
