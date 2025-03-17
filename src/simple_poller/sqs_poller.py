@@ -61,7 +61,8 @@ class SqsPoller(BasePoller):
                 logger.exception(f"Failed to process message with ID {message_id}")
 
         try:
-            for task in as_completed(process(message) for message in messages):
+            # async for is only available in Python 3.13+
+            async for task in as_completed(process(message) for message in messages):
                 await task
         finally:
             if to_be_deleted:
