@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+import logging
 import signal
 from abc import ABC, abstractmethod
 from asyncio import sleep
 from collections.abc import Awaitable
-from logging import info
 from types import FrameType
 from typing import Callable
+
+logger = logging.getLogger(__name__)
 
 
 class BasePoller(ABC):
@@ -37,7 +39,7 @@ class BasePoller(ABC):
             (cond is None or await cond())
             and not exiting
         ):
-            info("Polling")
+            logger.info("Polling")
 
             await sleep(interval)
 
@@ -46,4 +48,4 @@ class BasePoller(ABC):
         if exiting:
             # Cannot print within `signal_handler`. Otherwise it would cause
             # `RuntimeError: reentrant call inside <_io.BufferedWriter name='<stdout>'>`
-            info("Cancelled")
+            logger.info("Cancelled")

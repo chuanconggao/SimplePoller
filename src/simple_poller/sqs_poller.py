@@ -1,6 +1,6 @@
+import logging
 from asyncio import as_completed
 from collections.abc import Awaitable
-from logging import error, info
 from os import getenv
 from typing import Any, Callable, override
 
@@ -9,6 +9,8 @@ import boto3
 from .base_poller import BasePoller
 
 STAGE: str = getenv("STAGE", "dev")
+
+logger = logging.getLogger(__name__)
 
 
 class SqsPoller(BasePoller):
@@ -40,13 +42,13 @@ class SqsPoller(BasePoller):
             WaitTimeSeconds=1,
         ).get("Messages", [])
 
-        info(f"Received {len(messages)} message")
+        logger.info(f"Received {len(messages)} message")
 
         to_be_deleted: list[dict[str, str]] = []
 
         async def process(message: dict[str, Any]) -> None:
             message_id: str = message["MessageId"]
-            info(f"Processing message with ID {message_id}")
+            logger.info(f"Processing message with ID {message_id}")
 
             try:
                 await self.handler(message)
@@ -56,7 +58,7 @@ class SqsPoller(BasePoller):
                     "ReceiptHandle": message["ReceiptHandle"],
                 })
             except RuntimeError:
-                error("Failed to process message with ID {message_id}")
+                logger.exception(f"Failed to process message with ID {message_id}")
 
         try:
             for task in as_completed(process(message) for message in messages):
@@ -68,4 +70,4 @@ class SqsPoller(BasePoller):
                     QueueUrl=self.__queue_url,
                 )
 
-                info(f"Deleted {len(to_be_deleted)} message")
+                logger.info(f"Deleted {len(to_be_deleted)} message")
