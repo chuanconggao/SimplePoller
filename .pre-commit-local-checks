@@ -1,6 +1,6 @@
 #! /usr/bin/env bash
 
-. "$(poetry env info --path)/bin/activate"
+. ".venv/bin/activate"
 
 mypy src
 

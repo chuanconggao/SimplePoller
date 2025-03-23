@@ -15,10 +15,6 @@ repos:
   rev: v0.11.0
   hooks:
     - id: ruff
-- repo: https://github.com/python-poetry/poetry
-  rev: "1.7"
-  hooks:
-  - id: poetry-check
 - repo: local
   hooks:
   - id: check-local
