@@ -29,21 +29,6 @@ source = [
     "src",
 ]
 
-[tool.mypy]
-ignore_missing_imports = true
-strict = true
-
-[tool.pylint.format]
-max-line-length = 100
-
-[tool.pylint."messages control"]
-disable = [
-    "C0103",
-    "C0114",
-    "C0115",
-    "C0116",
-]
-
 [tool.pytest.ini_options]
 addopts = "--cov --cov-report xml:cov.xml --cov-report html --cov-report term-missing"
 pythonpath = [

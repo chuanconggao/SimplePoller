@@ -4,9 +4,8 @@ import logging
 import signal
 from abc import ABC, abstractmethod
 from asyncio import sleep
-from collections.abc import Awaitable
+from collections.abc import Awaitable, Callable
 from types import FrameType
-from typing import Callable
 
 logger = logging.getLogger(__name__)
 
@@ -29,7 +28,7 @@ class BasePoller(ABC):
     ) -> None:
         exiting: bool = False
 
-        def signal_handler(sig: int, frame: FrameType | None) -> None:
+        def signal_handler(_sig: int, _frame: FrameType | None) -> None:
             nonlocal exiting
             exiting = True
 

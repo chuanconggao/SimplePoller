@@ -1,5 +1,6 @@
 from typing import override
 from uuid import uuid4
+
 import pytest
 
 from simple_poller.base_poller import BasePoller
@@ -12,7 +13,7 @@ class TestPoller(BasePoller):
 
 
 @pytest.mark.asyncio
-async def test_BasePoller_poll():
+async def test_BasePoller_poll() -> None:  # noqa: N802
     async def test(x: str) -> None:
         print(x)
 
@@ -22,7 +23,7 @@ async def test_BasePoller_poll():
 
 
 @pytest.mark.asyncio
-async def test_BasePoller_poll_until():
+async def test_BasePoller_poll_until() -> None:  # noqa: N802
     c: list[str] = []
 
     async def test(x: str) -> None:

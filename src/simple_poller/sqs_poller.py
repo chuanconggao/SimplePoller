@@ -1,8 +1,8 @@
 import logging
 from asyncio import as_completed
-from collections.abc import Awaitable
+from collections.abc import Awaitable, Callable
 from os import getenv
-from typing import Any, Callable, override
+from typing import Any, override
 
 import boto3
 
