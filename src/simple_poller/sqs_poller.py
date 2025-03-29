@@ -24,6 +24,7 @@ class SqsPoller(BasePoller):
         super().__init__(handler)
 
         self.__queue_url: str = queue_url
+        self.__fifo: bool = queue_url.endswith(".fifo")
 
         self.__client = client or boto3.client(
             service_name="sqs",
@@ -62,9 +63,13 @@ class SqsPoller(BasePoller):
                 logger.exception(f"Failed to process message with ID {message_id}")
 
         try:
-            # async for is only available in Python 3.13+
-            async for task in as_completed(process(message) for message in messages):
-                await task
+            if self.__fifo:
+                for message in messages:
+                    await process(message)
+            else:
+                # async for is only available in Python 3.13+
+                async for task in as_completed(process(message) for message in messages):
+                    await task
         finally:
             if to_be_deleted:
                 self.__client.delete_message_batch(
