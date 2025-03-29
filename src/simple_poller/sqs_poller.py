@@ -18,6 +18,7 @@ class SqsPoller(BasePoller):
         self,
         queue_url: str,
         handler: Callable[..., Awaitable[None]],
+        *,
         client: Any = None,
     ) -> None:
         super().__init__(handler)
