@@ -1,2 +1,2 @@
-def test_importable():
+def test_importable() -> None:
     import simple_poller  # type: ignore  # noqa: F401
