@@ -8,7 +8,7 @@ import boto3
 
 from .base_poller import BasePoller
 
-STAGE: str = getenv("STAGE", "dev")
+STAGE: str = getenv("STAGE", "local")
 
 logger = logging.getLogger(__name__)
 
