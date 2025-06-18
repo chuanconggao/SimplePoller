@@ -29,9 +29,6 @@ class SqsPoller(BasePoller):
     ) -> None:
         super().__init__(handler)
 
-        self.__queue_url: str = queue_url
-        self.__fifo: bool = queue_url.endswith(".fifo")
-
         self.__client = client or boto3.client(
             service_name="sqs",
             endpoint_url=(
@@ -39,6 +36,16 @@ class SqsPoller(BasePoller):
                 else None
             ),
         )
+
+        self.__queue_url: str = (
+            queue_url if queue_url.startswith(("https://", "http://"))
+            else self.__client.get_queue_url(
+                QueueName=queue_url,
+            )["QueueUrl"]
+
+        )
+        self.__fifo: bool = queue_url.endswith(".fifo")
+
         self.__raw_message = raw_message
 
     @staticmethod
