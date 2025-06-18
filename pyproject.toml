@@ -7,7 +7,7 @@ name = "simple-poller"
 version = "0.1.2"
 description = ""
 authors = [{ name = "Chuancong Gao", email = "chuanconggao@users.noreply.github.com" }]
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 readme = "README.md"
 dependencies = []
 

@@ -73,8 +73,8 @@ class SqsPoller(BasePoller):
                 for message in messages:
                     await process(message)
             else:
-                # async for is only available in Python 3.13+
-                async for task in as_completed(process(message) for message in messages):
+                # TODO: Use `async for` which is only available in Python 3.13+
+                for task in as_completed(process(message) for message in messages):
                     await task
         finally:
             if to_be_deleted:
