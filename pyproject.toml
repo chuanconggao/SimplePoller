@@ -24,6 +24,9 @@ dev = [
     "mypy>=1.7.1",
 ]
 
+[project.urls]
+Repository = "https://github.com/chuanconggao/SimplePoller"
+
 [tool.coverage.run]
 source = [
     "src",
