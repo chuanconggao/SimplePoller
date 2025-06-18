@@ -1,3 +1,4 @@
+import json
 import logging
 from asyncio import as_completed
 from collections.abc import Awaitable, Callable
@@ -20,6 +21,7 @@ class SqsPoller(BasePoller):
         handler: Callable[..., Awaitable[None]],
         *,
         client: Any = None,
+        raw_message: bool = True,
     ) -> None:
         super().__init__(handler)
 
@@ -33,6 +35,7 @@ class SqsPoller(BasePoller):
                 else None
             ),
         )
+        self.__raw_message = raw_message
 
     @override
     async def poll(self) -> None:
@@ -53,7 +56,10 @@ class SqsPoller(BasePoller):
             logger.info(f"Processing message with ID {message_id}")
 
             try:
-                await self.handler(message)
+                await self.handler(
+                    message if self.__raw_message
+                    else json.loads(message["Body"]),
+                )
 
                 to_be_deleted.append({
                     "Id": message_id,
