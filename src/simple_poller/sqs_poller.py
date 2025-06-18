@@ -6,6 +6,7 @@ from os import getenv
 from typing import Any, override
 
 import boto3
+from box import Box
 
 from .base_poller import BasePoller
 
@@ -57,7 +58,9 @@ class SqsPoller(BasePoller):
 
             try:
                 await self.handler(
-                    message if self.__raw_message
+                    # Use `Box` to provide object-like attribute access (like `message.Body`)
+                    # while still being instance of `dict`
+                    Box(message) if self.__raw_message
                     else json.loads(message["Body"]),
                 )
 
