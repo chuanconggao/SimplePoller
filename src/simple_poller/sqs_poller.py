@@ -1,11 +1,14 @@
+import gzip
 import json
 import logging
 from asyncio import as_completed
+from base64 import b64decode
 from collections.abc import Awaitable, Callable
 from os import getenv
-from typing import Any, override
+from typing import Any, Literal, override
 
 import boto3
+import simple_zstd as zstd
 from box import Box
 
 from .base_poller import BasePoller
@@ -38,9 +41,27 @@ class SqsPoller(BasePoller):
         )
         self.__raw_message = raw_message
 
+    @staticmethod
+    def __decode_body(
+        body: str,
+        *,
+        encoding: Literal["gzip", "zstd"] | None = None,
+    ) -> str:
+        match encoding:
+            case "gzip":
+                return gzip.decompress(b64decode(body.encode())).decode()
+            case "zstd":
+                return zstd.decompress(b64decode(body.encode())).decode()
+            case None:
+                return body
+            case _:
+                raise ValueError
+
     @override
     async def poll(self) -> None:
         messages: list[dict[str, Any]] = self.__client.receive_message(
+            MessageAttributeNames=["All"],
+            MessageSystemAttributeNames=["All"],
             # Maximum allowed number
             MaxNumberOfMessages=10,
             QueueUrl=self.__queue_url,
@@ -60,8 +81,17 @@ class SqsPoller(BasePoller):
                 await self.handler(
                     # Use `Box` to provide object-like attribute access (like `message.Body`)
                     # while still being instance of `dict`
-                    Box(message) if self.__raw_message
-                    else json.loads(message["Body"]),
+                    Box(message)
+                    if self.__raw_message
+                    else json.loads(self.__decode_body(
+                        message["Body"],
+                        encoding=(
+                            message
+                            .get("MessageAttributes", {})
+                            .get("ContentEncoding", {})
+                            .get("StringValue")
+                        ),
+                    )),
                 )
 
                 to_be_deleted.append({
