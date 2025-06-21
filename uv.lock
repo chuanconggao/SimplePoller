@@ -139,6 +139,18 @@ wheels = [
 ]
 
 [[package]]
+name = "extratools-core"
+version = "0.1.25"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "toolz" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/1d/176b9d84b18df72448f2e5db9eeb0f84cf9ad2911345a1522a3c9dcda0f6/extratools_core-0.1.25.tar.gz", hash = "sha256:e0fc817fb74c042917df846402430ad71bfa15fa428a856670cdddb44575c0d9", size = 113395, upload-time = "2025-06-21T03:16:15.266Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/16/16/db545aedaf30e7a1b861e1d231a77d36e5575e8bc77d244e8f411a0f0794/extratools_core-0.1.25-py3-none-any.whl", hash = "sha256:7eeaae2d26d3c8a20f988a9a6cf204127abd850639676ce10501594530b2260b", size = 25845, upload-time = "2025-06-21T03:16:13.905Z" },
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -418,6 +430,7 @@ name = "simple-poller"
 version = "0.1.4"
 source = { editable = "." }
 dependencies = [
+    { name = "extratools-core" },
     { name = "python-box" },
     { name = "simple-zstd" },
 ]
@@ -438,6 +451,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "boto3", marker = "extra == 'sqs'", specifier = ">=1.37.13" },
+    { name = "extratools-core", specifier = ">=0.1.25" },
     { name = "python-box", specifier = ">=7.3.2" },
     { name = "simple-zstd", specifier = ">=0.1.1" },
 ]
@@ -484,6 +498,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/28/e3/55dcc2cfbc3ca9c29519eb6884dd1415ecb53b0e934862d3559ddcb7e20b/stack_data-0.6.3.tar.gz", hash = "sha256:836a778de4fec4dcd1dcd89ed8abff8a221f58308462e1c4aa2a3cf30148f0b9", size = 44707, upload-time = "2023-09-30T13:58:05.479Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f1/7b/ce1eafaf1a76852e2ec9b22edecf1daa58175c090266e9f6c64afcd81d91/stack_data-0.6.3-py3-none-any.whl", hash = "sha256:d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695", size = 24521, upload-time = "2023-09-30T13:58:03.53Z" },
+]
+
+[[package]]
+name = "toolz"
+version = "1.0.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8a/0b/d80dfa675bf592f636d1ea0b835eab4ec8df6e9415d8cfd766df54456123/toolz-1.0.0.tar.gz", hash = "sha256:2c86e3d9a04798ac556793bced838816296a2f085017664e4995cb40a1047a02", size = 66790, upload-time = "2024-10-04T16:17:04.001Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/03/98/eb27cc78ad3af8e302c9d8ff4977f5026676e130d28dd7578132a457170c/toolz-1.0.0-py3-none-any.whl", hash = "sha256:292c8f1c4e7516bf9086f8850935c799a874039c8bcf959d47b600e4c44a6236", size = 56383, upload-time = "2024-10-04T16:17:01.533Z" },
 ]
 
 [[package]]

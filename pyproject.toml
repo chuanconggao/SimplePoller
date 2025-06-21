@@ -10,6 +10,7 @@ authors = [{ name = "Chuancong Gao", email = "chuanconggao@users.noreply.github.
 requires-python = ">=3.12"
 readme = "README.md"
 dependencies = [
+    "extratools-core>=0.1.25",
     "python-box>=7.3.2",
     "simple-zstd>=0.1.1",
 ]

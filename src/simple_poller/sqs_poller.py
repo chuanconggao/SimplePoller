@@ -2,7 +2,6 @@ import gzip
 import json
 import logging
 from asyncio import as_completed
-from base64 import b64decode
 from collections.abc import Awaitable, Callable
 from os import getenv
 from typing import Any, Literal, override
@@ -10,6 +9,7 @@ from typing import Any, Literal, override
 import boto3
 import simple_zstd as zstd
 from box import Box
+from extratools_core.str import decompress
 
 from .base_poller import BasePoller
 
@@ -56,9 +56,9 @@ class SqsPoller(BasePoller):
     ) -> str:
         match encoding:
             case "gzip":
-                return gzip.decompress(b64decode(body.encode())).decode()
+                return decompress(body, gzip.decompress)
             case "zstd":
-                return zstd.decompress(b64decode(body.encode())).decode()
+                return decompress(body, zstd.decompress)
             case None:
                 return body
             case _:
