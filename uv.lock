@@ -159,14 +159,15 @@ aws = [
 
 [[package]]
 name = "extratools-core"
-version = "0.1.25"
+version = "0.1.26"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
+    { name = "simple-zstd" },
     { name = "toolz" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/86/1d/176b9d84b18df72448f2e5db9eeb0f84cf9ad2911345a1522a3c9dcda0f6/extratools_core-0.1.25.tar.gz", hash = "sha256:e0fc817fb74c042917df846402430ad71bfa15fa428a856670cdddb44575c0d9", size = 113395, upload-time = "2025-06-21T03:16:15.266Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/d6/ea/9a74a2a4e7dfc121fe0d64cb2e5d510adbfa541c6ea0a4050cedc8718afb/extratools_core-0.1.26.tar.gz", hash = "sha256:0e197677c9d97ffcf3f54d169b197d27358d7a28417d99a2abaf8cdf62be362a", size = 122515, upload-time = "2025-06-22T03:31:08.979Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/16/16/db545aedaf30e7a1b861e1d231a77d36e5575e8bc77d244e8f411a0f0794/extratools_core-0.1.25-py3-none-any.whl", hash = "sha256:7eeaae2d26d3c8a20f988a9a6cf204127abd850639676ce10501594530b2260b", size = 25845, upload-time = "2025-06-21T03:16:13.905Z" },
+    { url = "https://files.pythonhosted.org/packages/4f/e0/cebde4d93544e880e3f3b13d331138751dafa834759fd85e61b9df123faa/extratools_core-0.1.26-py3-none-any.whl", hash = "sha256:fcf25e8842e4b44f392fe704d161e7b4afbbf9ebd9b3ef6ceda31aba9187299d", size = 26515, upload-time = "2025-06-22T03:31:07.593Z" },
 ]
 
 [[package]]
@@ -451,7 +452,6 @@ source = { editable = "." }
 dependencies = [
     { name = "extratools-core" },
     { name = "python-box" },
-    { name = "simple-zstd" },
 ]
 
 [package.optional-dependencies]
@@ -472,9 +472,8 @@ dev = [
 requires-dist = [
     { name = "boto3", marker = "extra == 'sqs'", specifier = ">=1.37.13" },
     { name = "extratools-cloud", extras = ["aws"], marker = "extra == 'sqs'", specifier = ">=0.1.4" },
-    { name = "extratools-core", specifier = ">=0.1.25" },
+    { name = "extratools-core", specifier = ">=0.1.26" },
     { name = "python-box", specifier = ">=7.3.2" },
-    { name = "simple-zstd", specifier = ">=0.1.1" },
 ]
 provides-extras = ["sqs"]
 

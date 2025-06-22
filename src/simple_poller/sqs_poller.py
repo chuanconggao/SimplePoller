@@ -1,15 +1,13 @@
-import gzip
 import json
 import logging
 from asyncio import as_completed
 from collections.abc import Awaitable, Callable
-from typing import Any, Literal, override
+from typing import Any, override
 
-import simple_zstd as zstd
 from botocore.client import BaseClient
 from box import Box
 from extratools_cloud.aws.helpers import get_client
-from extratools_core.str import decompress
+from extratools_core.str import decode
 
 from .base_poller import BasePoller
 
@@ -40,22 +38,6 @@ class SqsPoller(BasePoller):
 
         self.__raw_message = raw_message
 
-    @staticmethod
-    def __decode_body(
-        body: str,
-        *,
-        encoding: Literal["gzip", "zstd"] | None = None,
-    ) -> str:
-        match encoding:
-            case "gzip":
-                return decompress(body, gzip.decompress)
-            case "zstd":
-                return decompress(body, zstd.decompress)
-            case None:
-                return body
-            case _:
-                raise ValueError
-
     @override
     async def poll(self) -> None:
         messages: list[dict[str, Any]] = self.__client.receive_message(
@@ -82,7 +64,7 @@ class SqsPoller(BasePoller):
                     # while still being instance of `dict`
                     Box(message)
                     if self.__raw_message
-                    else json.loads(self.__decode_body(
+                    else json.loads(decode(
                         message["Body"],
                         encoding=(
                             message
