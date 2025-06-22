@@ -3,17 +3,15 @@ import json
 import logging
 from asyncio import as_completed
 from collections.abc import Awaitable, Callable
-from os import getenv
 from typing import Any, Literal, override
 
-import boto3
 import simple_zstd as zstd
+from botocore.client import BaseClient
 from box import Box
+from extratools_cloud.aws.helpers import get_client
 from extratools_core.str import decompress
 
 from .base_poller import BasePoller
-
-STAGE: str = getenv("STAGE", "local")
 
 logger = logging.getLogger(__name__)
 
@@ -24,18 +22,12 @@ class SqsPoller(BasePoller):
         queue_url: str,
         handler: Callable[..., Awaitable[None]],
         *,
-        client: Any = None,
+        client: BaseClient | None = None,
         raw_message: bool = True,
     ) -> None:
         super().__init__(handler)
 
-        self.__client = client or boto3.client(
-            service_name="sqs",
-            endpoint_url=(
-                "http://localhost:4566" if STAGE == "local"
-                else None
-            ),
-        )
+        self.__client: BaseClient = client or get_client("sqs")
 
         self.__queue_url: str = (
             queue_url if queue_url.startswith(("https://", "http://"))
