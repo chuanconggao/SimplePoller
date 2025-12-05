@@ -1,6 +1,6 @@
 import json
 import logging
-from asyncio import as_completed
+from asyncio import as_completed, sleep
 from collections.abc import Awaitable, Callable
 from typing import Any, override
 
@@ -22,6 +22,8 @@ class SqsPoller(BasePoller):
         *,
         client: BaseClient | None = None,
         raw_message: bool = True,
+        batch_size: int = 10,
+        idle_duration: float = 0,
     ) -> None:
         super().__init__(handler)
 
@@ -38,13 +40,26 @@ class SqsPoller(BasePoller):
 
         self.__raw_message = raw_message
 
+        if batch_size < 1 or batch_size > 10:
+            msg = "batch_size must be between 1 and 10"
+            raise ValueError(msg)
+        self.__batch_size = batch_size
+
+        if idle_duration < 0:
+            msg = "idle_duration must be non-negative"
+            raise ValueError(msg)
+        self.__idle_duration = idle_duration
+
     @override
     async def poll(self) -> None:
+        # Sleep first to make sure it is satisfied even on the first poll
+        await sleep(self.__idle_duration)
+
         messages: list[dict[str, Any]] = self.__client.receive_message(
             MessageAttributeNames=["All"],
             MessageSystemAttributeNames=["All"],
             # Maximum allowed number
-            MaxNumberOfMessages=10,
+            MaxNumberOfMessages=self.__batch_size,
             QueueUrl=self.__queue_url,
             # To enable long polling
             WaitTimeSeconds=1,
